@@ -1,10 +1,17 @@
-# CHARRA: CHAllenge-Response based Remote Attestation with TPM 2.0
+# CHARRA-PM: Passport Model based on CHAllenge-Response based Remote Attestation with TPM 2.0 
 
 ![CHARRA Logo](charra-logo_small.png)
 
-This is a proof-of-concept implementation of the "Challenge/Response Remote Attestation" interaction model of the [IETF RATS](https://datatracker.ietf.org/wg/rats/about/) [Reference Interaction Models for Remote Attestation Procedures](https://datatracker.ietf.org/doc/draft-ietf-rats-reference-interaction-models/) using TPM 2.0. The [IETF Remote Attestation Procedures (RATS)](https://datatracker.ietf.org/wg/rats/about/) working group standardizes formats for describing assertions/claims about system components and associated evidence; and procedures and protocols to convey these assertions/claims to relying parties. Given the security and privacy sensitive nature of these assertions/claims, the working group specifies approaches to protect this exchanged data.
+CHARRA is a proof-of-concept implementation of the "Challenge/Response Remote Attestation" interaction model of the [IETF RATS](https://datatracker.ietf.org/wg/rats/about/) [Reference Interaction Models for Remote Attestation Procedures](https://datatracker.ietf.org/doc/draft-ietf-rats-reference-interaction-models/) using TPM 2.0. The [IETF Remote Attestation Procedures (RATS)](https://datatracker.ietf.org/wg/rats/about/) working group standardizes formats for describing assertions/claims about system components and associated evidence; and procedures and protocols to convey these assertions/claims to relying parties. Given the security and privacy sensitive nature of these assertions/claims, the working group specifies approaches to protect this exchanged data.
 
 This proof-of-concept implementation realizes the Attesting Computing Environment—a Computing Environment capable of monitoring and attesting a target Computing Environment—as well as the target Computing Environment itself, as described in the [RATS Architecture](https://datatracker.ietf.org/doc/draft-ietf-rats-architecture/).
+
+CHARRA-PM is a development of the Passport Model, also defined by RATS workgroup documents using the source code from CHARRA and developing functions and interactions into a new model.
+
+CHARRA-PM is also a work presaented in my MSc Dissertation at Coimbra University in September of 2022.
+
+CHARRA code can be found at https://github.com/Fraunhofer-SIT/charra
+
 
 ## Changelog 2021-03-17
 
@@ -88,6 +95,11 @@ This proof-of-concept implementation realizes the Attesting Computing Environmen
 
 * CHARRA now has a logo, see [charra-logo.svg](./charra-logo.svg), [charra-logo.png](./charra-logo.png), and [charra-logo_small.png](./charra-logo_small.png).
 
+## Changelog 2022-09-16
+
+- Implementation of CHARRA-PM PoC
+
+
 ## Next Steps
 
 * Allow verifier to perform periodic attestations, e.g. perform attestation every 10 seconds.
@@ -103,33 +115,22 @@ This proof-of-concept implementation realizes the Attesting Computing Environmen
 
 ## How it Works: Protocol Flow
 
-The following diagram shows the protocol flow of the CHARRA attestation process.
 
-    .----------.                                    .----------.
-    | Attester |                                    | Verifier |
-    '----------'                                    '----------'
-         |                                                |
-         | <----- requestAttestation(nonce, keyID, pcrSelection)
-         |                                                |
-    tpmQuote(nonce, pcrSelection)                         |
-         | => evidence                                    |
-         |                                                |
-     evidence ------------------------------------------> |
-         |                                                |
-         |      appraiseEvidence(evidence, nonce, referencePcrs)
-         |                           attestationResult <= |
-         |                                                |
+The following diagram shows the protocol flow of the CHARRA-PM attestation process.
+
+![Passport Model](PassportModel.png)
+
 
 ## Build and Run
 
-CHARRA comes with a Docker test environment and Docker helper scripts to build and run it in Docker.
-It is also possible to build and run CHARRA manually.
+CHARRA-PM (as its based on CHARRA) comes with a Docker test environment and Docker helper scripts to build and run it in Docker.
+<!-- It is also possible to build and run CHARRA manually. -->
 All commands assume to be executed in [Bash](https://www.gnu.org/software/bash/), the Bourne-again shell.
 
 ### Using Docker
 
-Running CHARRA in Docker is the "quickstart" way of running it.
-This way, you do not need to install all the dependencies into your system in order to try CHARRA.
+Running CHARRA-PM in Docker is the "quickstart" way of running it.
+This way, you do not need to install all the dependencies into your system in order to try CHARRA-PM.
 All steps to get it up and running are described in the following.
 
 #### Build the Docker Base Image
@@ -192,7 +193,7 @@ That is why the Docker base image for CHARRA must now be built manually.
 
        ./docker/run.sh
 
-#### Compile and Run CHARRA
+<!-- #### Compile and Run CHARRA
 
 1. Compile CHARRA (inside container):
 
@@ -205,7 +206,7 @@ That is why the Docker base image for CHARRA must now be built manually.
 
 If you see "ATTESTATION SUCCESSFUL" you're done. Congratz :-D
 
-### Compile and Run Manually
+ ### Compile and Run Manually 
 
 The provided `Dockerfile` lets you quickly test CHARRA in a Docker environment.
 If you want to run CHARRA bare metal, please refer to this guide here.
@@ -306,6 +307,7 @@ If you see "ATTESTATION SUCCESSFUL" you're done. Congratz :-D
       (bin/attester &); sleep .2 ; bin/verifier ; sleep 1 ; pkill -SIGINT -f bin/attester
 
   This Make flag is part of the CHARRA `Makefile` and adds the `-fsanitize=address` argument to `CFLAGS` and `LDFLAGS`.
+-->
 
 ## Run Attester and Verifier on different Devices
 
@@ -341,8 +343,14 @@ To do that, you have to provide an external network for the attester Docker cont
        cd charra
        bin/attester
 
+6. Run the relying_party binary in the relying party docker container (This must be up before verifier runs):
+
+       /bin/relying_party
+
 6. Run the verifier binary in the verifier docker container:
 
        /bin/verifier
 
 If you see "ATTESTATION SUCCESSFUL" you're done. Congratz :-D
+
+For more parameter details, run one of the binary with `-h` parameter.
