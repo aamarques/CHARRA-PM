@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 # CHARRA-PM: Passport Model based on CHAllenge-Response based Remote Attestation with TPM 2.0 
-=======
-# CHARRA-PM: CHAllenge-Response based Remote Attestation - Passport Model with TPM 2.0
->>>>>>> 784ed4758488b402446bc4fa3eace75552e12190
 
 ![CHARRA Logo](charra-logo_small.png)
 
@@ -10,7 +6,6 @@ CHARRA is a proof-of-concept implementation of the "Challenge/Response Remote At
 
 This proof-of-concept implementation realizes the Attesting Computing Environment—a Computing Environment capable of monitoring and attesting a target Computing Environment—as well as the target Computing Environment itself, as described in the [RATS Architecture](https://datatracker.ietf.org/doc/draft-ietf-rats-architecture/).
 
-<<<<<<< HEAD
 CHARRA-PM is a development of the Passport Model, also defined by RATS workgroup documents using the source code from CHARRA and developing functions and interactions into a new model.
 
 CHARRA-PM is also a work presaented in my MSc Dissertation at Coimbra University in September of 2022.
@@ -18,14 +13,12 @@ CHARRA-PM is also a work presaented in my MSc Dissertation at Coimbra University
 CHARRA code can be found at https://github.com/Fraunhofer-SIT/charra
 
 
-=======
 ## Changelog 2022-09-05 
 * This is a implementation of Passport Model using CHARRA project as base.
 * Now called CHARRA-PM
 * The intent is not replace CHARRA, but place the Passport Model as a new PoC.
 * This code also is branch msi-thesis at CHARRA fork https://github.com/aamarques/
 * 
->>>>>>> 784ed4758488b402446bc4fa3eace75552e12190
 ## Changelog 2021-03-17
 
 * Dynamic memory allocation for QCBOR encoded data using *malloc()*.
@@ -128,63 +121,22 @@ CHARRA code can be found at https://github.com/Fraunhofer-SIT/charra
 
 ## How it Works: Protocol Flow
 
-<<<<<<< HEAD
 
 The following diagram shows the protocol flow of the CHARRA-PM attestation process.
 
 ![Passport Model](PassportModel.png)
-=======
-The following diagram shows the protocol flow of the CHARRA-PM attestation process.
-```
-.----------.                                                .----------.                            .----------.
-| Attester |                                                | Verifier |                            | R. P.    |
-'----------'                                                '----------'                            '----------'
-     |                                                            |                                      |
-  generateClaims(attestingEnvironment)                            |                                      |
-     | => claims, eventLogs                                       |                                      |
-     |                                                            |                                      |
-     | <-- requestAttestation(handle, authSecIDs, claimSelection) |                                      |
-     |                                                            |                                      |
-  collectClaims(claims, claimSelection)                           |                                      |
-     | => collectedClaims                                         |                                      |
-     |                                                            |                                      |
-  generateEvidence(handle, authSecIDs, collectedClaims)           |                                      |
-     | => evidence                                                |                                      |
-     |                                                            |                                      |
-     | evidence, eventLogs -------------------------------------> |                                      |
-     |                                                            |                                      |
-     |                appraiseEvidence(evidence, eventLogs, refValues)                                   |
-     |                                                            |                                      |
-     |   attestationResults <-----------------------------------  |                                      |
-     |                                                            |                                      |
-     | attestationResults(evidence, results) ----------------------------------------------------------> |                                                                  |                                                            |                                      |
-     |                                                            |                                      | appraiseResult()     
-	 |                                                            |                                      |
-```		 
-
-		 
->>>>>>> 784ed4758488b402446bc4fa3eace75552e12190
 
 
 ## Build and Run
 
-<<<<<<< HEAD
 CHARRA-PM (as its based on CHARRA) comes with a Docker test environment and Docker helper scripts to build and run it in Docker.
 <!-- It is also possible to build and run CHARRA manually. -->
-=======
-CHARRA-PM comes with a Docker test environment and Docker helper scripts to build and run it in Docker.
-It is also possible to build and run CHARRA-PM manually.
->>>>>>> 784ed4758488b402446bc4fa3eace75552e12190
 All commands assume to be executed in [Bash](https://www.gnu.org/software/bash/), the Bourne-again shell.
 
 ### Using Docker
 
 Running CHARRA-PM in Docker is the "quickstart" way of running it.
-<<<<<<< HEAD
 This way, you do not need to install all the dependencies into your system in order to try CHARRA-PM.
-=======
-This way, you do not need to install all the dependencies into your system in order to try CHARRA.
->>>>>>> 784ed4758488b402446bc4fa3eace75552e12190
 All steps to get it up and running are described in the following.
 
 #### Build the Docker Base Image
@@ -360,12 +312,8 @@ If you see "ATTESTATION SUCCESSFUL" you're done. Congratz :-D
       make clean ; make address-sanitizer=1
       (bin/attester &); sleep .2 ; bin/verifier ; sleep 1 ; pkill -SIGINT -f bin/attester
 
-<<<<<<< HEAD
   This Make flag is part of the CHARRA `Makefile` and adds the `-fsanitize=address` argument to `CFLAGS` and `LDFLAGS`.
 -->
-=======
-  This Make flag is part of the CHARRA-PM `Makefile` and adds the `-fsanitize=address` argument to `CFLAGS` and `LDFLAGS`.
->>>>>>> 784ed4758488b402446bc4fa3eace75552e12190
 
 ## Run Attester and Verifier on different Devices
 
