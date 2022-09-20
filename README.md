@@ -109,7 +109,7 @@ CHARRA code can be found at https://github.com/Fraunhofer-SIT/charra
 ## Next Steps
 
 * Add Relying Party Owner
-* Improve the code
+* Improve the Relying Party code
 
 <!-- * Allow verifier to perform periodic attestations, e.g. perform attestation every 10 seconds.
 * Update documentation. Perhaps externalize building and installation into `INSTALL.md`.
