@@ -108,7 +108,10 @@ CHARRA code can be found at https://github.com/Fraunhofer-SIT/charra
 
 ## Next Steps
 
-* Allow verifier to perform periodic attestations, e.g. perform attestation every 10 seconds.
+* Add Relying Party Owner
+* Improve the code
+
+<!-- * Allow verifier to perform periodic attestations, e.g. perform attestation every 10 seconds.
 * Update documentation. Perhaps externalize building and installation into `INSTALL.md`.
 * Refactor and implement forward-declared (but not yet implemented) functions.
 * Use non-zero reference PCRs.
@@ -117,7 +120,7 @@ CHARRA code can be found at https://github.com/Fraunhofer-SIT/charra
 * Add `*_free()` functions for all data transfer objects (DTOs).
 * Introduce semantic versioning as CHARRA develops along the way to become stable.
 
-*The order of the list is entirely arbitrary and does not reflect any priorities.*
+*The order of the list is entirely arbitrary and does not reflect any priorities.* -->
 
 ## How it Works: Protocol Flow
 
