@@ -798,17 +798,20 @@ int send_attestation_results(CHARRA_RC attestation_rc, coap_session_t* coap_sess
 
  	charra_log_trace("[" LOG_NAME "] Preparing ATTESTEATION RESULT for Attester (%d)", attestation_rp); 
 
+
 	char* attestationResult = NULL;
-	if (attestation_rc == 0) { 
+	if (attestation_rc != 0) { 
 		attestationResult = "Valid";
 	} else {
 		attestationResult = "Invalid";
 	};
-    
+
+   
 	size_t signature_len = 0;
 	unsigned char signature[1024];
+	charra_log_info("[" LOG_NAME "] attestatioResult value   [%d] ", attestation_rc );
 	charra_log_info("[" LOG_NAME "] Sending attestatioResult [ %s ] to be signed ", attestationResult);
-	charra_log_info("[" LOG_NAME "] Private key path : [ %s ]", dtls_rpk_private_key_path);
+	charra_log_info("[" LOG_NAME "] Private key path :       [ %s ]", dtls_rpk_private_key_path);
 
     if ((charra_sign_att_result(dtls_rpk_private_key_path, (unsigned char *) attestationResult, signature, &signature_len) != 0)) {
 		charra_log_error("[" LOG_NAME "] error signing attestation result.");
@@ -817,20 +820,6 @@ int send_attestation_results(CHARRA_RC attestation_rc, coap_session_t* coap_sess
 	}
 	
 	charra_log_info("[" LOG_NAME "]  attestatioResult signed ");
-
-
-	/* This code can be used to verify if the signature is valid before marshal and send it to attester */
-    // charra_log_info("[" LOG_NAME "] Verifying Signature");
- 	// if ((charra_verify_att_result(dtls_rpk_public_key_path, attestationResult, signature, signature_len) !=0)) {
-	// 	charra_log_error("[" LOG_NAME "] error verifing signature attestation result.");
-	// 	result = CHARRA_RC_CRYPTO_ERROR;
-	// 	goto cleanup;
-	// } else { 
-	// 	charra_log_info("[" LOG_NAME "] Signature VALID");
-	// 		charra_print_hex(CHARRA_LOG_INFO, signature_len, signature,
-	// 	"  signature received                                     0x", "\n", false);
- 	
-	// }
 
 	charra_log_info ("[" LOG_NAME "]  Creating Appraisal Structure.");
 	

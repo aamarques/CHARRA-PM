@@ -525,9 +525,7 @@ static void coap_attestation_results_handler(struct coap_context_t* ctx,
 	
 	/* --- receive incoming data --- */
 
-	charra_log_info("[" LOG_NAME "] +-----------------------------------+");
-	charra_log_info("[" LOG_NAME "] |  VERIFIER ATTESTATION RECEIVED    |");
-	charra_log_info("[" LOG_NAME "] +-----------------------------------+");
+
 
 	// Variables
 	int coap_r = 0;
@@ -552,14 +550,14 @@ static void coap_attestation_results_handler(struct coap_context_t* ctx,
 		charra_log_error("[" LOG_NAME "] Could not get CoAP PDU data.");
 		// goto error;
 	} else {
-		charra_log_info(
-			"[" LOG_NAME "] Received data of length %zu.", data_len);
-		charra_log_info("[" LOG_NAME "] Received data of total length %zu.",
-			data_total_len);
+		// charra_log_info(
+		// 	"[" LOG_NAME "] Received data of length %zu.", data_len);
+		// charra_log_info("[" LOG_NAME "] Received data of total length %zu.",
+		// 	data_total_len);
+		charra_log_info("[" LOG_NAME "] Received [attestationResult] from verifier.");
 	}
 
-	charra_log_info("[" LOG_NAME "] Calling Relying Party.");
-
+	
 	/* create CoAP context */
 	// charra_log_info("[" LOG_NAME "] Initializing CoAP in block-wise mode.");
 	// if ((ctx = charra_coap_new_context(true)) == NULL) {
@@ -594,7 +592,7 @@ static void coap_attestation_results_handler(struct coap_context_t* ctx,
 			dtls_rpk_peer2_public_key_path);
 	}
 
-	charra_log_info("Relying Part IP: %s", LISTEN_RP);
+	charra_log_debug("[" LOG_NAME "] Relying Part IP: %s", LISTEN_RP);
 
 	if (use_dtls_psk) {
 		charra_log_info(
@@ -610,7 +608,7 @@ static void coap_attestation_results_handler(struct coap_context_t* ctx,
 		}
 	} else if (use_dtls_rpk) {
 		charra_log_info(
-			"[" LOG_NAME "] Creating CoAP client session using DTLS-RPK.");
+			"[" LOG_NAME "]    Creating CoAP client session using DTLS-RPK.");
 
 		coap_dtls_pki_t dtls_pki = {0};
 
@@ -652,7 +650,7 @@ static void coap_attestation_results_handler(struct coap_context_t* ctx,
 	}
 
 	/* CoAP options */
-	charra_log_info("[" LOG_NAME "] Adding CoAP option [attestationResult] to URI_PATH.");
+	charra_log_info("[" LOG_NAME "]    Adding CoAP option [attestationResult] to URI_PATH.");
 	if (coap_insert_optlist(
 			&coap_options, coap_new_optlist(COAP_OPTION_URI_PATH, 6,
 							   (const uint8_t*)"attRes")) != 1) {
@@ -661,7 +659,7 @@ static void coap_attestation_results_handler(struct coap_context_t* ctx,
 		goto error;
 	}
 
-	charra_log_info("[" LOG_NAME "] Adding CoAP option [attestationResult] to CONTENT_TYPE.");
+	charra_log_info("[" LOG_NAME "]    Adding CoAP option [attestationResult] to CONTENT_TYPE.");
 	if (coap_insert_optlist(&coap_options,
 			coap_new_optlist(COAP_OPTION_CONTENT_TYPE,
 				coap_mediatype_cbor_buf_len2, coap_mediatype_cbor_buf2)) != 1) {
@@ -671,7 +669,7 @@ static void coap_attestation_results_handler(struct coap_context_t* ctx,
 	}
 
 	/* new CoAP request PDU */
-	charra_log_info("[" LOG_NAME "] Creating [attestationResult] PDU. ");
+	charra_log_info("[" LOG_NAME "]    Creating [attestationResult] PDU. ");
 	if ((pdu = charra_coap_new_request(coap_session, COAP_MESSAGE_TYPE_CON,
 		 COAP_REQUEST_FETCH, &coap_options, data, data_len)) == NULL) {
 			charra_log_error("[" LOG_NAME "] Cannot create [attestationResult] PDU.");
@@ -680,17 +678,15 @@ static void coap_attestation_results_handler(struct coap_context_t* ctx,
 	}
 
 	/* send CoAP PDU */
-	charra_log_info("[" LOG_NAME "] Sending [attestationResult] CoAP message to Relying Party.");
+	charra_log_info("[" LOG_NAME "] Forwarding [attestationResult] CoAP message to Relying Party.");
 	if ((mid = coap_send_large(coap_session, pdu)) == COAP_INVALID_MID) {
 		charra_log_error("[" LOG_NAME "] Cannot send result CoAP message.");
 		result = CHARRA_RC_COAP_ERROR;
 		goto error;
-	}
-
+	} 
 
 error: 
 	result = EXIT_FAILURE;
 
 // PASSPORT MODEL SENDING MESSAGE TO RP - END
-
 }
